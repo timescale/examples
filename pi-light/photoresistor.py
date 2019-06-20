@@ -21,7 +21,7 @@ Loop forever:
     Insert one second worth of raw data.
 """
 
-connection_string = os.environ.get("POSTGRESQL_CONNECTION", default="dbname=pi user=pi")
+connection_string = os.environ.get("TIMESCALEDB_CONNECTION", default="dbname=pi user=pi")
 
 with psycopg2.connect(connection_string) as conn:
     with conn.cursor() as cur:

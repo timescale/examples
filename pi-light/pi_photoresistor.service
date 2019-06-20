@@ -4,7 +4,7 @@ After=postgresql.service
 
 [Service]
 User=pi
-Environment=POSTGRESQL_CONNECTION=postgres://...
+Environment=TIMESCALEDB_CONNECTION=postgres://...
 ExecStart=/home/pi/photoresistor.py
 Restart=always
 
