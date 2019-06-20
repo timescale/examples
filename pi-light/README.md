@@ -11,11 +11,11 @@ Prepare TimescaleDB instance by creating the pi schema
 
 Prepare Grafana instance by creating a datasource
 
-   Login to Grafana > Configuration > Data Sources > Add data source > PostgreSQL
+    Login to Grafana > Configuration > Data Sources > Add data source > PostgreSQL
 
 Create Grafana dashboard
 
-   Login to Grafana > Dashboard > Import > ./grafana.json
+    Login to Grafana > Dashboard > Import > ./grafana.json
 
 ## The Edge (Raspberry Pi)
 
