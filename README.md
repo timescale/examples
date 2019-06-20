@@ -22,7 +22,9 @@ Collection of technologies you can use with TimescaleDB.
 
 ### Visualization
 
+- [Grafana](https://docs.timescale.com/v1.3/using-timescaledb/visualizing-data#grafana)
 - [Seeq](https://seeq12.atlassian.net/wiki/spaces/KB/pages/376963207/SQL+Connection+Configuration#SQLConnectionConfiguration-TimescaleDB)
+- [Tableau, PowerBI, Others](https://docs.timescale.com/v1.3/using-timescaledb/visualizing-data#other-viz-tools)
 
 ### Monitoring
 
