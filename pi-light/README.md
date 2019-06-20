@@ -1,12 +1,21 @@
-Hello World...I have seen the light.
+# Raspberry Pi Light Sensor
 
+This example will read data from a light sensor (wired to a Raspberry Pi device) and send that
+data to a TimescaleDB instance (hosted by Timescale Cloud). 
 
 ## The Cloud (Timescale Cloud)
 
-Prepare TimescaleDB instance by creating the schema
+Prepare TimescaleDB instance by creating the pi schema
 
-    psql -h placeholder.timescaledb.op -d demopi -U pi -p 5432 -a -q -f ./schema.sql
+    psql postgres://USERNAME:PASSWORD@HOST:PORT/defaultdb?sslmode=require -f ./pi-schema.sql
 
+Prepare Grafana instance by creating a datasource
+
+   Login to Grafana > Configuration > Data Sources > Add data source > PostgreSQL
+
+Create Grafana dashboard
+
+   Login to Grafana > Dashboard > Import > ./grafana.json
 
 ## The Edge (Raspberry Pi)
 
@@ -23,4 +32,10 @@ Copy python script to device
 
     scp ./photoresistor.py pi@10.0.1.14:/home/pi
 
+Copy systemd started setup in place (be sure to set the TIMESCALEDB_CONNECTION string to reach your TimescaleDB instance)
 
+    scp ./pi_photoresistor.service /etc/systemd/system
+    
+On device, start the service
+
+    sudo systemctl start pi_photoresistor.service

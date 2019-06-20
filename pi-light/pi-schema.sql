@@ -1,5 +1,7 @@
 CREATE DATABASE pi;
 
+CREATE EXTENSION IF NOT EXISTS timescaledb CASCADE;
+
 CREATE TABLE pi_obs(
   time timestamptz,
   metric text,
