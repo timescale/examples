@@ -41,12 +41,14 @@ Copy python script to device
 
     scp ./photoresistor.py pi@10.0.1.14:/home/pi
 
-The `photoresistor.py` script assumes that you're implementing a pull-down resistor on GPIO pin 23.
-You'll need to modify this depending on the specifics of your own sensor configuration.
+    > The `photoresistor.py` script assumes that you're implementing a pull-down resistor on GPIO pin 23. You'll
+    need to modify this depending on the specifics of your own sensor configuration.
 
-Copy systemd started setup in place (be sure to set the TIMESCALEDB_CONNECTION string to reach your TimescaleDB instance)
+Copy systemd started setup in place
 
     scp ./pi_photoresistor.service /etc/systemd/system
+
+    > Be sure to set the TIMESCALEDB_CONNECTION string to your Service URI "postgres://..." for your TimescaleDB instance.
 
 On device, start the service
 
