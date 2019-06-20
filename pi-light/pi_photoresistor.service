@@ -1,0 +1,12 @@
+[Unit]
+Description=Run photoresistor sensor
+After=postgresql.service
+
+[Service]
+User=pi
+Environment=POSTGRESQL_CONNECTION=postgres://...
+ExecStart=/home/pi/photoresistor.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
