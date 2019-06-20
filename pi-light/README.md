@@ -1,7 +1,7 @@
 # Raspberry Pi Light Sensor
 
 This example will read data from a light sensor (wired to a Raspberry Pi device) and send that
-data to a TimescaleDB instance (hosted by Timescale Cloud).
+data to a TimescaleDB instance (hosted by [Timescale Cloud](https://www.timescale.com/cloud)).
 
 ## Contents
 
@@ -12,7 +12,7 @@ A brief overview of the files in this directory and how they're used:
 * `grafana.json`: Grafana dashboard configuration.
 * `pi_photoresistor.service`: systemd service definition to ensure the sensor is restarted on reboot.
 
-## The Cloud (Timescale Cloud)
+## The Cloud ([Timescale Cloud](https://www.timescale.com/cloud))
 
 Prepare TimescaleDB instance by creating the pi schema
 
