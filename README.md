@@ -6,6 +6,7 @@ Collection of example applications to help you get familiar with TimescaleDB.
 |---|---|---|
 | [Raspberry Pi Light Sensor](pi-light)| Edge | Record light changes using a photoregister & Raspberry Pi. |
 | [MTA](mta) | Geospatial | Store & visualize bus activity in New York City. |
+| [Clients](clients) | Client | Sample libraries and drivers for connecting to TimescaleDB. |
 
 
 
