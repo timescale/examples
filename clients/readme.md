@@ -17,7 +17,7 @@ Install Python PostgreSQL Database Adapter [psycopg]( http://initd.org/psycopg/)
 
 Run the sample:
 
-    node tsdb-node-client.js
+    python tsdb-python-client.py
     
     
 ### Node.js
