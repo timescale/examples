@@ -5,21 +5,24 @@ Here is a list of client libraries and code examples to connect to a TimescaleDB
 
 | Language | Client | Download |
 |---|---|---|
-| [Python](#Python) | psycopg2 | https://pypi.org/project/psycopg2/ |
-| [Node.js](#Node.js) | pg package | https://www.npmjs.com/package/pg |
+| Go | pq | https://github.com/lib/pq |
+| [Java](#java) | JDBC Driver | https://jdbc.postgresql.org/ |
+| [Node.js](#nodejs) | pg package | https://www.npmjs.com/package/pg |
+| [Python](#python) | psycopg2 | https://pypi.org/project/psycopg2/ |
 
 
-### Python
+### Java
 
-Install Python PostgreSQL Database Adapter [psycopg]( http://initd.org/psycopg/) package:
+Include Maven dependency for PostgreSQL JDBC Driver
 
-   	pip install psycopg2
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>42.2.0</version>
+    </dependency>
 
-Run the [sample](tsdb-python-client.py):
+Sample Java code here.
 
-    python tsdb-python-client.py
-    
-    
 ### Node.js
 
 Install node-postgres [pg](https://www.npmjs.com/package/pg) package:
@@ -30,4 +33,14 @@ Run the [sample](tsdb-node-client.js):
 
     node tsdb-node-client.js
     
+    
+### Python
+
+Install Python PostgreSQL Database Adapter [psycopg]( http://initd.org/psycopg/) package:
+
+   	pip install psycopg2
+
+Run the [sample](tsdb-python-client.py):
+
+    python tsdb-python-client.py
     
