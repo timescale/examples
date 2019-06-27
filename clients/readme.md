@@ -21,7 +21,7 @@ Include Maven dependency for PostgreSQL JDBC Driver
       <version>42.2.0</version>
     </dependency>
 
-Sample Java code here.
+Java [sample code here](tsdb-java-connection.java).
 
 ### Node.js
 
