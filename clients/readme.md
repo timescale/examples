@@ -15,7 +15,7 @@ Install Python PostgreSQL Database Adapter [psycopg]( http://initd.org/psycopg/)
 
    	pip install psycopg2
 
-Run the sample:
+Run the [sample](tsdb-python-client.py):
 
     python tsdb-python-client.py
     
@@ -26,7 +26,7 @@ Install node-postgres [pg](https://www.npmjs.com/package/pg) package:
 
     npm install pg
 
-Run the sample:
+Run the [sample](tsdb-node-client.js):
 
     node tsdb-node-client.js
     
