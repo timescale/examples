@@ -7,6 +7,7 @@ Collection of example applications to help you get familiar with TimescaleDB.
 | [Raspberry Pi Light Sensor](pi-light)| Edge | Record light changes using a photoregister & Raspberry Pi. |
 | [MTA](mta) | Geospatial | Store & visualize bus activity in New York City. |
 | [Clients](clients) | Client Libraries | Sample code for connecting to TimescaleDB. |
+| [Air Quality](air-quality) | IoT | Sample code for collecting air quality measurements. |
 
 
 
@@ -30,4 +31,3 @@ Collection of technologies you can use with TimescaleDB.
 
 - [Prometheus](https://docs.timescale.com/latest/tutorials/prometheus-adapter)
 - [Zabbix](https://support.zabbix.com/browse/ZBXNEXT-4868)
-
