@@ -12,7 +12,7 @@ from pgcopy import CopyManager
 URL_CITIES = "https://api.openaq.org/v1/locations"
 URL_MEASUREMENTS = "https://api.openaq.org/v1/measurements"
 # WARNING: in the real world, make this an environment variable
-CONNECTION = "host=localhost dbname=airquality user=postgres"
+# CONNECTION = "host=localhost dbname=airquality user=postgres"
 POLL_INTERVAL = 300
 # Make global dicts to cache meta data
 measurements_dict = {}
@@ -27,6 +27,21 @@ def make_request(url, params):
         time.sleep(5)
         r = requests.get(url, params=params)
     return r
+
+# Force populate the cache
+def populate_cache(conn):
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM measurement_types")
+        for row in cursor.fetchall():
+            measurements_dict[row[1]] = [row[0], row[2]]
+        cursor.execute("SELECT * FROM locations")
+        for row in cursor.fetchall():
+            locations_dict[row[1]+' '+row[3]] = row[0]
+        cursor.close()
+    except (Exception, psycopg2.Error) as error:
+        print("Error thrown while trying to populate cache")
+    print("Finished populating cache")
 
 # Iterate through paginated API responses
 def iterate_request(url, params):
@@ -49,6 +64,8 @@ def parse_measurements(country_name, conn):
     params['country'] = country_name
     dataset = iterate_request(url, params)
     request = list()
+    measurements_request = list()
+    locations_request = list()
     for entry in dataset:
         parameter = entry['parameter']
         unit = entry['unit']
@@ -60,6 +77,7 @@ def parse_measurements(country_name, conn):
             print("Found "+ str(parameter_id) +" in measurements cache")
         # Measurement not found in cached dict, so need to update metadata table
         else:
+            measurements_request.append((parameter_id, parameter, unit))
             try:
                 cursor = conn.cursor()
                 cursor.execute("INSERT INTO measurement_types (parameter, unit) VALUES (%s, %s) ON CONFLICT DO NOTHING", (parameter, unit))
@@ -70,7 +88,7 @@ def parse_measurements(country_name, conn):
                 measurements_dict[parameter] = [parameter_id, unit]
                 print("Updated measurements cache")
             except (Exception, psycopg2.Error) as error:
-                print("Error thrown while trying to update measurement_types table")
+                print(error.pgerror)
         city_name = entry['city']
         location_name = entry['location']
         city_and_location = city_name + ' ' + location_name
@@ -92,13 +110,20 @@ def parse_measurements(country_name, conn):
                 locations_dict[city_and_location] = location_id
                 print("Updated locations cache")
             except (Exception, psycopg2.Error) as error:
-                print("Error thrown while trying to update measurement_types table")
+                print(error.pgerror)
         timestamp = datetime.datetime.strptime(entry['date']['utc'],'%Y-%m-%dT%H:%M:%S.%fZ')
         value = entry['value']
         request.append((timestamp,parameter_id,location_id, value))
     cols = ('time', 'parameter_id', 'location_id','value')
-    mgr = CopyManager(conn, 'measurements', cols)
+    mgr = CopyManager(conn, 'temp_measurements', cols)
     mgr.copy(request)
+    try:
+        cursor = conn.cursor()
+        cursor.execute("INSERT INTO measurements SELECT * FROM temp_measurements ON CONFLICT DO NOTHING")
+        cursor.execute("TRUNCATE temp_measurements CASCADE")
+        cursor.close()
+    except (Exception, psycopg2.Error) as error:
+        print(error.pgerror)
     conn.commit()
 
 if __name__ == "__main__":
@@ -107,18 +132,7 @@ if __name__ == "__main__":
     locations_dict = {}
     with psycopg2.connect(CONNECTION) as conn:
         # Populate dict variables when program is initialized
-        try:
-            cursor = conn.cursor()
-            cursor.execute("SELECT * FROM measurement_types")
-            for row in cursor.fetchall():
-                measurements_dict[row[1]] = [row[0], row[2]]
-            cursor.execute("SELECT * FROM locations")
-            for row in cursor.fetchall():
-                locations_dict[row[1]+' '+row[3]] = row[0]
-            cursor.close()
-        except (Exception, psycopg2.Error) as error:
-            print("Error thrown while trying to populate cache")
-        print("Finished populating cache")
+        populate_cache(conn)
         while True:
             parse_measurements('GB', conn)
             print("SLEEPING FOR " + str(POLL_INTERVAL))
