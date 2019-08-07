@@ -19,7 +19,7 @@ The files in this directory and how they're used:
 * `sample.json`: Sample json output from the Open AQ Platform API.
 
 ## Getting Started
-0. Create a TimescaleDB and Grafana instance
+0. Create a [TimescaleDB and Grafana instance](https://www.timescale.com/cloud-signup)
 1. Update `airquality_ingest.py` with your TimescaleDB connection string
 2. Install necessary packages as listed in `requirements.txt`
 3. Initialize your TimescaleDB database with the schemas specified in `schema.sql`
