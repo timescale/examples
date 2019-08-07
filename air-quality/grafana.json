@@ -1,0 +1,536 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 1,
+  "links": [],
+  "panels": [
+    {
+      "content": "\n# Getting started with time_bucket()\n\nThe `time_bucket()` function was one of the first time-series specific functions built into TimescaleDB. It was designed to make it easier to aggregate metrics into \"time buckets\" and allows greater querying flexibility than the functions that already exist within PostgreSQL. Specifically, the `date_trunc()` function is limited in only being able to select by a single time unit. For example, you can query for 1 minute, 1 day, 1 month, or 1 year. `time_bucket()` allows you to define arbitrary time buckets - think 1 minute, 5 minutes, 1 day, 14 days, etc. \n\nThe syntax for this function is very straight forward - you essentially embed the function directly in a select statement. Let's try a simple example using the Air Quality sample application. This application pulls data from an open API, assigns unique ids for different locations and parameter types, and stores the measurement value obtained from different sensors. Let's say that we want to find all measurements associated with `location_id = 1`. \n\n`SELECT * FROM measurements WHERE location_id = 150;`\n\nYou'll notice that Grafana has nicely graphed each parameter in a separate color. You can achieve this by setting the metric value to `parameter_id`.\n\n\n\n",
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "links": [],
+      "mode": "markdown",
+      "options": {},
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  \"time\" AS \"time\",\n  value\nFROM measurements\nWHERE\n  $__timeFilter(\"time\")\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "measurements",
+          "timeColumn": "\"time\"",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Step 1",
+      "type": "text"
+    },
+    {
+      "aliasColors": {
+        "9": "purple"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "fill": 1,
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 4,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": false,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {},
+      "percentage": false,
+      "pointradius": 2,
+      "points": true,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "parameter_id::TEXT",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  \"time\" AS \"time\",\n  parameter_id::TEXT AS metric,\n  value\nFROM measurements\nWHERE\n  $__timeFilter(\"time\") AND\n  location_id = 150\nORDER BY 1,2",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "measurements",
+          "timeColumn": "\"time\"",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "int4",
+              "name": "",
+              "params": [
+                "location_id",
+                "=",
+                "150"
+              ],
+              "type": "expression"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Measurements for Location 150",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "content": "\n# Using time_bucket()\n\nIn the above module, you created a really simple graph that displayed all the parameters being collected for `location_id = 150`. You'll notice that we get measurements from these sensors every hour. Let's say that actually what you really care about is the average measurement over a four hour period. That's where `time_bucket()` comes in. Grafana comes with built-in support for Timescale-specific functions, so you can directly use `time_bucket()` in the Grafana interface. \n\nThe query would look something like this: \n`SELECT time_bucket('4 hours', time) AS four_hours, avg(value) FROM measurements WHERE location_id = 150 GROUP BY four_hours, parameter_id ORDER BY four_hours;`\n\n\n\n",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 10
+      },
+      "id": 6,
+      "links": [],
+      "mode": "markdown",
+      "options": {},
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": false,
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Step 2",
+      "type": "text"
+    },
+    {
+      "aliasColors": {
+        "9": "purple"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "fill": 1,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 10
+      },
+      "id": 8,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": false,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {},
+      "percentage": false,
+      "pointradius": 2,
+      "points": true,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  time_bucket('4 hours', time) AS \"time\",\n  parameter_id::TEXT AS metric,\n  avg(value)\nFROM measurements\nWHERE\n  $__timeFilter(\"time\") AND \n  location_id = 150\nGROUP BY 1, 2\nORDER BY 1, 2",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "measurements",
+          "timeColumn": "\"time\"",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "4 hour average for Location 150",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "content": "\n# Why time_bucket_gapfill()?\n\nIf you look closely at the first dashboard, you'll notice that certain parameters don't report every hour - sometimes you have gaps in data. Specifically, notice how `parameter_id = 9` reports pretty rarely and inconsistently. This is particularly common in IoT use cases, where devices might be occassionally offline. However, what if we actually want to fill in these gaps, even if the sensor didn't report back in? \n\nTimescaleDB has a couple built-in options that you can use, all built around the `time_bucket_gapfill()` function. First, let's do something quite simple - let's fill in the gaps with the last known value. We call this function `locf()`, which stands for \"last object carried forward.\"\n\nHere's what a query might look like:\n\n`SELECT time_bucket_gapfill('4 hour', time) AS four_hours, parameter_id, locf(avg(value)) FROM measurements GROUP BY four_hours, parameter_id ORDER BY four_hours;`\n\nYou'll notice that the purple line that maps to `parameter_id = 9` doesn't have any gaps anymore! You can actually also linearly interpolate instead of carrying the last object forward. \n\nThat query would look something like: \n\n`SELECT time_bucket_gapfill('4 hour', time) AS four_hours, parameter_id, interpolate(avg(value)) FROM measurements GROUP BY four_hours, parameter_id ORDER BY four_hours;`\n\nYou'll notice that `parameter_id = 7` and `parameter_id = 8` aren't filled in for the beginning portion of the graph. This is because when you run `time_bucket_gapfill()`, the function only pulls values from the specified time range. The values needed to fill in `parameter_id = 7` and `parameter_id = 8` fall out of the bounds of the specified time range. In order to fill in those gaps, you have to explicitly tell the function to go search for the necessary value outside of the existing range. For an example of how to do that, please check out our documentation https://docs.timescale.com/latest/api#interpolate. \n",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 18
+      },
+      "id": 10,
+      "links": [],
+      "mode": "markdown",
+      "options": {},
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  \"time\" AS \"time\",\n  value\nFROM measurements\nWHERE\n  $__timeFilter(\"time\")\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "measurements",
+          "timeColumn": "\"time\"",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Step 3",
+      "type": "text"
+    },
+    {
+      "aliasColors": {
+        "7": "orange",
+        "8": "red",
+        "9": "purple"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "fill": 1,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 18
+      },
+      "id": 11,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": false,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {},
+      "percentage": false,
+      "pointradius": 2,
+      "points": true,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  time_bucket_gapfill('4 hours', time) AS \"time\",\n  parameter_id::TEXT AS metric,\n  locf(avg(value))\nFROM measurements\nWHERE\n  $__timeFilter(\"time\") AND \n  location_id = 150\nGROUP BY 1, 2\nORDER BY 1, 2",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "measurements",
+          "timeColumn": "\"time\"",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "4 hour LOCF average for Location 150",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    }
+  ],
+  "refresh": false,
+  "schemaVersion": 18,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "2019-07-31T15:42:01.232Z",
+    "to": "2019-08-07T15:42:01.232Z"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "timezone": "",
+  "title": "Air Quality - time_bucket()",
+  "uid": "FAONPsDZz",
+  "version": 13
+}
