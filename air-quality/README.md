@@ -7,7 +7,7 @@ to collect and store data in TimescaleDB.
 ## Requirements
 - A working instance of [TimescaleDB](https://docs.timescale.com)
 - Python3 environment
-- Install python dependencies with `pip install -r requirements.txt`
+- Install python dependencies with `pip3 install -r requirements.txt`
 
 ## Content
 The files in this directory and how they're used:
@@ -23,6 +23,6 @@ The files in this directory and how they're used:
 1. Update `airquality_ingest.py` with your TimescaleDB connection string
 2. Install necessary packages as listed in `requirements.txt`
 3. Initialize your TimescaleDB database with the schemas specified in `schema.sql`
-4. Run `python airquality_ingest.py` to start the ingestion
+4. Run `python3 airquality_ingest.py` to start the ingestion
 5. Create Grafana instance and import dashboard `Login to Grafana > Dashboard > Import > ./grafana.json`
 

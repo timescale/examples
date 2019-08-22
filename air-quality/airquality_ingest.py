@@ -9,10 +9,9 @@ import datetime
 import psycopg2
 from pgcopy import CopyManager
 
-URL_CITIES = "https://api.openaq.org/v1/locations"
 URL_MEASUREMENTS = "https://api.openaq.org/v1/measurements"
 # WARNING: in the real world, make this an environment variable
-# CONNECTION = "host=localhost dbname=airquality user=postgres"
+CONNECTION = "postgres://[user]:[password]@192.168.99.101:5432/airquality"
 POLL_INTERVAL = 300
 # Make global dicts to cache meta data
 measurements_dict = {}
@@ -41,6 +40,7 @@ def populate_cache(conn):
         cursor.close()
     except (Exception, psycopg2.Error) as error:
         print("Error thrown while trying to populate cache")
+        print(error)
     print("Finished populating cache")
 
 # Iterate through paginated API responses

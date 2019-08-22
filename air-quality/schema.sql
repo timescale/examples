@@ -26,4 +26,11 @@ CREATE TABLE measurements (
   value FLOAT
 );
 
+CREATE TABLE temp_measurements (
+  time TIMESTAMPTZ,
+  parameter_id INTEGER REFERENCES measurement_types(parameter_id),
+  location_id INTEGER REFERENCES locations(location_id),
+  value FLOAT
+);
+
 SELECT create_hypertable('measurements', 'time');
