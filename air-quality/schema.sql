@@ -34,3 +34,44 @@ CREATE TABLE temp_measurements (
 );
 
 SELECT create_hypertable('measurements', 'time');
+
+-- Continuous Aggregates Example
+
+CREATE VIEW measurements_15min
+WITH (timescaledb.continuous)
+AS
+SELECT
+  time_bucket('15 minute', time) as bucket,
+  parameter_id,
+  avg(value) as avg,
+  max(value) as max,
+  min(value) as min
+FROM
+  measurements
+GROUP BY bucket, parameter_id;
+
+CREATE VIEW measurements_hourly
+WITH (timescaledb.continuous)
+AS
+SELECT
+  time_bucket('1 hour', time) as bucket,
+  parameter_id,
+  avg(value) as avg,
+  max(value) as max,
+  min(value) as min
+FROM
+  measurements
+GROUP BY bucket, parameter_id;
+
+CREATE VIEW measurements_daily
+WITH (timescaledb.continuous)
+AS
+SELECT
+  time_bucket('1 day', time) as bucket,
+  parameter_id,
+  avg(value) as avg,
+  max(value) as max,
+  min(value) as min
+FROM
+  measurements
+GROUP BY bucket, parameter_id;
