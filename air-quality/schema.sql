@@ -75,3 +75,29 @@ SELECT
 FROM
   measurements
 GROUP BY bucket, parameter_id;
+
+CREATE VIEW shorter_lag_daily
+WITH (timescaledb.continuous, timescaledb.refresh_lag = '1 day', timescaledb.refresh_interval = '2 hour')
+AS
+SELECT
+  time_bucket('1 day', time) as bucket,
+  parameter_id,
+  avg(value) as avg,
+  max(value) as max,
+  min(value) as min
+FROM
+  measurements
+GROUP BY bucket, parameter_id;
+
+CREATE VIEW no_lag_daily
+WITH (timescaledb.continuous, timescaledb.refresh_lag = '- 1 day', timescaledb.refresh_interval = '2 hour')
+AS
+SELECT
+  time_bucket('1 day', time) as bucket,
+  parameter_id,
+  avg(value) as avg,
+  max(value) as max,
+  min(value) as min
+FROM
+  measurements
+GROUP BY bucket, parameter_id;
