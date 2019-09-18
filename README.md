@@ -8,7 +8,7 @@ Collection of example applications to help you get familiar with TimescaleDB.
 | [MTA](mta) | Geospatial | Store & visualize bus activity in New York City. |
 | [Clients](clients) | Client Libraries | Sample code for connecting to TimescaleDB. |
 | [Air Quality](air-quality) | IoT | Sample code for collecting air quality measurements. |
-| [Crypto Tutorial](crypto-tutorial) | Financial | Sample code and dataset for analyzing cryptocurrency market data|
+| [Crypto Tutorial](https://github.com/timescale/examples/tree/master/crypto_tutorial) | Financial | Sample code and dataset for analyzing cryptocurrency market data|
 
 
 
