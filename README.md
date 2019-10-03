@@ -21,7 +21,7 @@ Collection of technologies you can use with TimescaleDB.
 
 - [Kafka](https://streamsets.com/blog/ingesting-data-apache-kafka-timescaledb/)
 - [Telegraf](https://docs.timescale.com/latest/tutorials/telegraf-output-plugin)
-- [Netdata](https://bitbucket.org/mahlon/netdata-tsrelay/src/default/)
+- [Netdata](https://github.com/mahlonsmith/netdata-timescale-relay)
 
 #### Visualization
 
