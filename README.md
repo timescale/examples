@@ -4,6 +4,7 @@ Collection of example applications to help you get familiar with TimescaleDB.
 
 | Example | Type | Description |
 |---|---|---|
+| [Hello Timescale](hello-timescale)| Geospatial | Analyze taxi cab data in New York City. |
 | [Raspberry Pi Light Sensor](pi-light)| Edge | Record light changes using a photoregister & Raspberry Pi. |
 | [MTA](mta) | Geospatial | Store & visualize bus activity in New York City. |
 | [Clients](clients) | Client Libraries | Sample code for connecting to TimescaleDB. |
