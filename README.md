@@ -34,3 +34,23 @@ Collection of technologies you can use with TimescaleDB.
 
 - [Prometheus](https://docs.timescale.com/latest/tutorials/prometheus-adapter)
 - [Zabbix](https://support.zabbix.com/browse/ZBXNEXT-4868)
+
+## Additional documentation
+
+- [Why use TimescaleDB?](https://tsdb.co/GitHubTimescaleIntro)
+- [Installing TimescaleDB?](https://tsdb.co/GitHubTimescaleInstall)
+- [Migrating data to TimescaleDB](https://tsdb.co/GitHubTimescalePostgresMigrate)
+- [Tutorials and sample data](https://tsdb.co/GitHubTimescaleTutorials)
+
+## Community & help
+
+- [Slack Channel](https://slack.timescale.com)
+- [Timescale Support](https://tsdb.co/GitHubTimescaleSupport): see support options (community & subscription)
+
+## License
+
+The examples in this repository are released under the [Apache 2.0 license](LICENSE).
+
+## Contributing
+
+If you wish to make contributions to this project, please refer to [Contributor Instructions](CONTRIBUTING.md) for more information.
