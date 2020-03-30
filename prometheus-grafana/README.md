@@ -1,4 +1,4 @@
-# Example Dashboards for to get started analyzing Prometheus metrics using Timescale and Grafana
+# Example Dashboards to get started analyzing Prometheus metrics using Timescale and Grafana
 
 ### Context and Intended Use
 
