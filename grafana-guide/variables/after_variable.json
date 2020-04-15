@@ -1,0 +1,259 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "gnetId": null,
+    "graphTooltip": 0,
+    "id": 7,
+    "iteration": 1586991162850,
+    "links": [],
+    "panels": [
+      {
+        "circleMaxSize": "1",
+        "circleMinSize": "2",
+        "colors": [
+          "#F2495C",
+          "#5794F2",
+          "#FADE2A",
+          "#B877D9",
+          "#FF9830"
+        ],
+        "datasource": "MTA Bus DB",
+        "decimals": 0,
+        "esMetric": "Count",
+        "gridPos": {
+          "h": 15,
+          "w": 12,
+          "x": 0,
+          "y": 0
+        },
+        "hideEmpty": false,
+        "hideZero": false,
+        "id": 15,
+        "initialZoom": "11",
+        "locationData": "table",
+        "mapCenter": "custom",
+        "mapCenterLatitude": "40.879070000000056",
+        "mapCenterLongitude": "-73.88537600000012",
+        "maxDataPoints": 1,
+        "mouseWheelZoom": true,
+        "options": {},
+        "showLegend": true,
+        "stickyLabels": false,
+        "tableQueryOptions": {
+          "geohashField": "geohash",
+          "labelField": "route_id",
+          "latitudeField": "latitude",
+          "longitudeField": "longitude",
+          "metricField": "color",
+          "queryType": "coordinates"
+        },
+        "targets": [
+          {
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "SELECT\n  max(time) as \"time\",\n  vid AS \"vehicle_id\",\n  route_id,\n  CASE WHEN route_id like 'M%' THEN 1\n       WHEN route_id like 'B%' THEN 2\n       WHEN route_id like 'Q%' THEN 3\n       WHEN route_id like 'S%' THEN 4\n       ELSE 0\n   END AS \"color\",\n  ST_X(geom) AS \"longitude\",\n  ST_Y(geom) AS \"latitude\"\nFROM mta where time > now()-interval '1.5 minutes' AND substring(route_id,1,1) IN ($route)\ngroup by vid, route_id, geom order by 1;",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "thresholds": "1,2,3,4",
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Current MTA Bus Locations (with filter)",
+        "type": "grafana-worldmap-panel",
+        "unitPlural": "",
+        "unitSingle": "",
+        "valueName": "current"
+      },
+      {
+        "circleMaxSize": "1",
+        "circleMinSize": "2",
+        "colors": [
+          "#F2495C",
+          "#73BF69"
+        ],
+        "datasource": "MTA Bus DB",
+        "decimals": 0,
+        "esMetric": "Count",
+        "gridPos": {
+          "h": 15,
+          "w": 12,
+          "x": 12,
+          "y": 0
+        },
+        "hideEmpty": false,
+        "hideZero": false,
+        "id": 9,
+        "initialZoom": "11",
+        "locationData": "table",
+        "mapCenter": "custom",
+        "mapCenterLatitude": "40.879070000000056",
+        "mapCenterLongitude": "-73.88537600000012",
+        "maxDataPoints": 1,
+        "mouseWheelZoom": false,
+        "options": {},
+        "showLegend": true,
+        "stickyLabels": false,
+        "tableQueryOptions": {
+          "geohashField": "geohash",
+          "labelField": "",
+          "latitudeField": "latitude",
+          "longitudeField": "longitude",
+          "metricField": "on_route",
+          "queryType": "coordinates"
+        },
+        "targets": [
+          {
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "-- How many busses are off-route in past 5 mins?\nSELECT\n  max(bus.time) AS \"time\",\n  vid AS \"vehicle_id\",\n  CASE WHEN st_within(bus.geom, route.geom) THEN 1 ELSE 0 END AS \"on_route\",\n  -- bus.route_id,\n  ST_X(bus.geom) AS \"longitude\",\n  ST_Y(bus.geom) AS \"latitude\"\nFROM\n  route_geofences AS route \n  JOIN mta AS bus \n  ON (route.route_id = bus.route_id) \nWHERE\n  bus.time > now() - interval '1.5 minutes' AND substring(bus.route_id,1,1) IN ($route)\nGROUP BY vid, bus.geom, route.geom order by 1",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "thresholds": "1",
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "How many buses are off-route?",
+        "type": "grafana-worldmap-panel",
+        "unitPlural": "",
+        "unitSingle": "",
+        "valueName": "current"
+      }
+    ],
+    "schemaVersion": 22,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": [
+        {
+          "allValue": "",
+          "current": {
+            "text": "Manhattan + Bronx/Brooklyn + Queens + Staten Island",
+            "value": [
+              "M",
+              "B",
+              "Q",
+              "S"
+            ]
+          },
+          "datasource": "MTA Bus DB",
+          "definition": "SELECT k AS \"__text\", v AS \"__value\" from (values ('Manhattan','M'),('Bronx/Brooklyn' ,'B'),('Queens','Q'),('Staten Island','S')) v(k,v);",
+          "hide": 0,
+          "includeAll": true,
+          "label": "MTA Bus Route",
+          "multi": true,
+          "name": "route",
+          "options": [
+            {
+              "selected": false,
+              "text": "All",
+              "value": "$__all"
+            },
+            {
+              "selected": true,
+              "text": "Manhattan",
+              "value": "M"
+            },
+            {
+              "selected": true,
+              "text": "Bronx/Brooklyn",
+              "value": "B"
+            },
+            {
+              "selected": true,
+              "text": "Queens",
+              "value": "Q"
+            },
+            {
+              "selected": true,
+              "text": "Staten Island",
+              "value": "S"
+            }
+          ],
+          "query": "SELECT k AS \"__text\", v AS \"__value\" from (values ('Manhattan','M'),('Bronx/Brooklyn' ,'B'),('Queens','Q'),('Staten Island','S')) v(k,v);",
+          "refresh": 0,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        }
+      ]
+    },
+    "time": {
+      "from": "now-30d",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ]
+    },
+    "timezone": "",
+    "title": "Variables Example MTA Bus",
+    "uid": "Wci68m3Zk",
+    "version": 2
+  }
