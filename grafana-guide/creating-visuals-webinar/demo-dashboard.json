@@ -1,0 +1,708 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "gnetId": null,
+    "graphTooltip": 0,
+    "id": 10,
+    "iteration": 1587501360655,
+    "links": [],
+    "panels": [
+      {
+        "aliasColors": {
+          "total_cases": "yellow",
+          "total_deaths": "red"
+        },
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "COVID-19 Data",
+        "description": "Plotting cases and deaths of COVID-19",
+        "fill": 1,
+        "fillGradient": 3,
+        "gridPos": {
+          "h": 8,
+          "w": 11,
+          "x": 0,
+          "y": 0
+        },
+        "hiddenSeries": false,
+        "id": 12,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": true,
+        "renderer": "flot",
+        "seriesOverrides": [
+          {
+            "alias": "total_deaths",
+            "yaxis": 2
+          }
+        ],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "format": "time_series",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "-- Simple query to chart growth of cases and deaths due to COVID-19 over time\nSELECT date as \"time\", sum (cases) as total_cases, sum(deaths) as total_deaths\nFROM states\nGROUP BY time\nORDER BY time;\n",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "COVID 19 Spread in USA",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "circleMaxSize": "1",
+        "circleMinSize": "1",
+        "colors": [
+          "#5794F2",
+          "rgba(237, 129, 40, 0.89)",
+          "#B877D9",
+          "#FADE2A",
+          "rgba(50, 172, 45, 0.97)"
+        ],
+        "datasource": "MTA Bus DB",
+        "decimals": 0,
+        "esMetric": "Count",
+        "gridPos": {
+          "h": 29,
+          "w": 12,
+          "x": 11,
+          "y": 0
+        },
+        "hideEmpty": false,
+        "hideZero": false,
+        "id": 10,
+        "initialZoom": "11",
+        "locationData": "table",
+        "mapCenter": "custom",
+        "mapCenterLatitude": "40.879070000000056",
+        "mapCenterLongitude": "-73.88537600000012",
+        "maxDataPoints": 1,
+        "mouseWheelZoom": true,
+        "options": {},
+        "showLegend": true,
+        "stickyLabels": false,
+        "tableQueryOptions": {
+          "geohashField": "geohash",
+          "labelField": "route_id",
+          "latitudeField": "latitude",
+          "longitudeField": "longitude",
+          "metricField": "color",
+          "queryType": "coordinates"
+        },
+        "targets": [
+          {
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "SELECT\n  max(time) AS \"time\",\n  vid AS \"vehicle_id\",\n  route_id,\n  CASE WHEN route_id LIKE 'M%' THEN 1\n       WHEN route_id LIKE 'B%' THEN 2\n       WHEN route_id LIKE 'Q%' THEN 3\n       WHEN route_id LIKE 'S%' THEN 4\n       ELSE 0\n   END AS \"color\",\n  ST_X(geom) AS \"longitude\",\n  ST_Y(geom) AS \"latitude\"\nFROM mta \nWHERE time > now()-interval '1.5 minutes' AND substring(route_id,1,1) IN ($route)\ngroup by vid, route_id, geom order by 1;",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "thresholds": "1,2,3,4",
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Real time location of NYC Busses",
+        "type": "grafana-worldmap-panel",
+        "unitPlural": "",
+        "unitSingle": "",
+        "valueName": "current"
+      },
+      {
+        "cacheTimeout": null,
+        "colorBackground": false,
+        "colorValue": false,
+        "colors": [
+          "#299c46",
+          "rgba(237, 129, 40, 0.89)",
+          "#d44a3a"
+        ],
+        "datasource": "Taxi DB",
+        "description": "Version of Timescale on Taxi DB",
+        "format": "none",
+        "gauge": {
+          "maxValue": 100,
+          "minValue": 0,
+          "show": false,
+          "thresholdLabels": false,
+          "thresholdMarkers": true
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 6,
+          "x": 0,
+          "y": 8
+        },
+        "id": 2,
+        "interval": null,
+        "links": [],
+        "mappingType": 1,
+        "mappingTypes": [
+          {
+            "name": "value to text",
+            "value": 1
+          },
+          {
+            "name": "range to text",
+            "value": 2
+          }
+        ],
+        "maxDataPoints": 100,
+        "nullPointMode": "connected",
+        "nullText": null,
+        "options": {},
+        "postfix": "",
+        "postfixFontSize": "50%",
+        "prefix": "Timescale",
+        "prefixFontSize": "200%",
+        "rangeMaps": [
+          {
+            "from": "null",
+            "text": "N/A",
+            "to": "null"
+          }
+        ],
+        "sparkline": {
+          "fillColor": "rgba(31, 118, 189, 0.18)",
+          "full": false,
+          "lineColor": "rgb(31, 120, 193)",
+          "show": false,
+          "ymax": null,
+          "ymin": null
+        },
+        "tableColumn": "",
+        "targets": [
+          {
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "-- What version of Timescale am I using?\nSELECT extversion FROM pg_extension WHERE extname='timescaledb';\n",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "timeColumn": "time",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "thresholds": "",
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Timescale Version",
+        "type": "singlestat",
+        "valueFontSize": "200%",
+        "valueMaps": [
+          {
+            "op": "=",
+            "text": "N/A",
+            "value": "null"
+          }
+        ],
+        "valueName": "first"
+      },
+      {
+        "cacheTimeout": null,
+        "colorBackground": true,
+        "colorValue": false,
+        "colors": [
+          "#d44a3a",
+          "rgba(237, 129, 40, 0.89)",
+          "#73BF69"
+        ],
+        "datasource": "Monitoring DB",
+        "decimals": 7,
+        "format": "percentunit",
+        "gauge": {
+          "maxValue": 100,
+          "minValue": 0,
+          "show": false,
+          "thresholdLabels": false,
+          "thresholdMarkers": true
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 5,
+          "x": 6,
+          "y": 8
+        },
+        "id": 8,
+        "interval": null,
+        "links": [],
+        "mappingType": 1,
+        "mappingTypes": [
+          {
+            "name": "value to text",
+            "value": 1
+          },
+          {
+            "name": "range to text",
+            "value": 2
+          }
+        ],
+        "maxDataPoints": 100,
+        "nullPointMode": "connected",
+        "nullText": null,
+        "options": {},
+        "postfix": "",
+        "postfixFontSize": "50%",
+        "prefix": "",
+        "prefixFontSize": "150%",
+        "rangeMaps": [
+          {
+            "from": "null",
+            "text": "N/A",
+            "to": "null"
+          }
+        ],
+        "sparkline": {
+          "fillColor": "rgba(31, 118, 189, 0.18)",
+          "full": false,
+          "lineColor": "rgb(31, 120, 193)",
+          "show": false,
+          "ymax": null,
+          "ymin": null
+        },
+        "tableColumn": "",
+        "targets": [
+          {
+            "format": "time_series",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "-- Cache Hit ratio\n-- hit = Blocks hit = number of disk block found already in the buffer cache s/t a read was not needed\n-- read = disk blocks read by data base\nSELECT hit.time, SUM(hit.value)/(SUM(hit.value) + SUM(read.value)) as cache_hit_rate\nFROM metrics_values hit \nINNER JOIN metrics_values read ON hit.time = read.time\nWHERE  hit.labels_id = 312 AND read.labels_id = 314\nGROUP BY hit.time\nORDER BY hit.time;",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "avg"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "table": "metrics_5mins",
+            "timeColumn": "bucket",
+            "timeColumnType": "timestamp",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "thresholds": "0.75,0.9",
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Current Cache hit ratio for TaxiDB",
+        "type": "singlestat",
+        "valueFontSize": "200%",
+        "valueMaps": [
+          {
+            "op": "=",
+            "text": "N/A",
+            "value": "null"
+          }
+        ],
+        "valueName": "current"
+      },
+      {
+        "datasource": "Monitoring DB",
+        "description": "Percentage disk used on Taxi DB",
+        "gridPos": {
+          "h": 10,
+          "w": 6,
+          "x": 0,
+          "y": 14
+        },
+        "id": 4,
+        "options": {
+          "fieldOptions": {
+            "calcs": [
+              "last"
+            ],
+            "defaults": {
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "yellow",
+                    "value": 50
+                  },
+                  {
+                    "color": "orange",
+                    "value": 75
+                  },
+                  {
+                    "color": "red",
+                    "value": 90
+                  }
+                ]
+              },
+              "title": "Percentage of Disk Used",
+              "unit": "percent"
+            },
+            "overrides": [],
+            "values": false
+          },
+          "orientation": "auto",
+          "showThresholdLabels": true,
+          "showThresholdMarkers": true
+        },
+        "pluginVersion": "6.6.2",
+        "targets": [
+          {
+            "format": "time_series",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "-- Disk usage\nSELECT\n  $__timeGroupAlias(\"time\", 1m),\n  avg(value) AS \"% disk used\"\nFROM metrics\nWHERE\n  $__timeFilter(\"time\") AND\n  name LIKE 'disk_used_percent'\nGROUP BY 1\nORDER BY 1",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "avg"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "table": "metrics_5mins",
+            "timeColumn": "bucket",
+            "timeColumnType": "timestamp",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Taxi DB Disk Used",
+        "type": "gauge"
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "Monitoring DB",
+        "description": "Cache hit ratio on Taxi DB ",
+        "fill": 3,
+        "fillGradient": 4,
+        "gridPos": {
+          "h": 10,
+          "w": 5,
+          "x": 6,
+          "y": 14
+        },
+        "hiddenSeries": false,
+        "id": 6,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 4,
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "format": "time_series",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "-- Cache Hit ratio\n-- hit = Blocks hit = number of disk block found already in the buffer cache s/t a read was not needed\n-- read = disk blocks read by data base\nSELECT hit.time, SUM(hit.value)/(SUM(hit.value) + SUM(read.value)) as cache_hit_rate\nFROM metrics_values hit \nINNER JOIN metrics_values read ON hit.time = read.time\nWHERE  hit.labels_id = 312 AND read.labels_id = 314\nGROUP BY hit.time\nORDER BY hit.time;",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "avg"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "table": "metrics_5mins",
+            "timeColumn": "bucket",
+            "timeColumnType": "timestamp",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "TaxiDB Cache hit ratio",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      }
+    ],
+    "schemaVersion": 22,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": [
+        {
+          "allValue": null,
+          "current": {
+            "text": "",
+            "value": [
+              ""
+            ]
+          },
+          "datasource": "MTA Bus DB",
+          "definition": "SELECT k AS \"__text\", v AS \"__value\" from (values ('Manhattan','M'),('Bronx/Brooklyn' ,'B'),('Queens','Q'),('Staten Island','S')) v(k,v);",
+          "hide": 0,
+          "includeAll": true,
+          "label": "NYC Bus Route",
+          "multi": true,
+          "name": "route",
+          "options": [
+            {
+              "selected": false,
+              "text": "All",
+              "value": "$__all"
+            },
+            {
+              "selected": false,
+              "text": "Manhattan",
+              "value": "M"
+            },
+            {
+              "selected": false,
+              "text": "Bronx/Brooklyn",
+              "value": "B"
+            },
+            {
+              "selected": false,
+              "text": "Queens",
+              "value": "Q"
+            },
+            {
+              "selected": false,
+              "text": "Staten Island",
+              "value": "S"
+            }
+          ],
+          "query": "SELECT k AS \"__text\", v AS \"__value\" from (values ('Manhattan','M'),('Bronx/Brooklyn' ,'B'),('Queens','Q'),('Staten Island','S')) v(k,v);",
+          "refresh": 0,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        }
+      ]
+    },
+    "time": {
+      "from": "now-30m",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ]
+    },
+    "timezone": "",
+    "title": "Live Webinar Playground",
+    "uid": "AOx_uJqWk",
+    "version": 12
+  }
