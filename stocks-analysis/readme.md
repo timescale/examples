@@ -20,6 +20,7 @@ How to collect, store and analyze stock data with Python. This project will be b
 * Python 3
 * Virtualenv
 * PostgreSQL database with TimescaleDB extension
+* Alpha Vantage API key ([get one here](https://www.alphavantage.co/support/#api-key))
 
 ## Usage
 
@@ -38,27 +39,39 @@ How to collect, store and analyze stock data with Python. This project will be b
    - with psql:
 
    `psql -f create_table.sql`
+   
    - or with this SQL script:
 
-   ```sql
-   CREATE TABLE public.stocks2 (
-      stock_datetime timestamp(0) NOT NULL,
-      price_open float8 NULL,
-      price_close float8 NULL,
-      price_low float8 NULL,
-      price_high float8 NULL,
-      trading_volume int4 NULL,
-      symbol varchar NULL
-   );
+      ```sql
+      CREATE TABLE public.stocks2 (
+         stock_datetime timestamp(0) NOT NULL,
+         price_open float8 NULL,
+         price_close float8 NULL,
+         price_low float8 NULL,
+         price_high float8 NULL,
+         trading_volume int4 NULL,
+         symbol varchar NULL
+      );
+      ```
+
+4. Modify `config.py` according to your database connection details.
+   ```python
+   class StocksConfig(object):
+      DB_USER = 'user'
+      DB_PASS = 'passwd'
+      DB_HOST = 'host'
+      DB_PORT = 'port'
+      DB_NAME = 'name'
+      APIKEY = 'apikey'
    ```
 
-4. Run stock_analyis.py to start fetching data into your database.
+5. Run stock_analyis.py to start fetching data into your database.
 
-```bash
-python stock_analysis.py
-```
+   ```bash
+   python stock_analysis.py
+   ```
 
-5. Check if data records are being inserted into the database.
+6. Check if data records are being inserted into the database.
 
 |stock_datetime|price_open|price_close|price_low|price_high|trading_volume|symbol|
 |--------------|----------|-----------|---------|----------|--------------|------|
