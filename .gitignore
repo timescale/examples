@@ -1,2 +1,11 @@
 **/.DS_Store
 /air-quality/venv
+.idea/examples.iml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/workspace.xml
+.idea/inspectionProfiles/profiles_settings.xml
+.vscode/settings.json
+stocks-analysis/__pycache__/config.cpython-38.pyc
+stocks-analysis/.vscode/settings.json
