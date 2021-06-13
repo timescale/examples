@@ -18,19 +18,20 @@ How to collect, store and analyze stock data with Python. This project will be b
 
 ## Requirements
 * Python 3
+* Virtualenv
 * PostgreSQL database with TimescaleDB extension
-* Virtualenv and `pip install -r requirements.txt`
 
 ## Usage
 
-1. Create new virtual environment in root directory and activate it.
+1. Create a new virtual environment in root directory and activate it.
    
    ```bash
    virtualenv env
    source env/bin/activate
    ```
 
-2. Install requirements qith pip
+2. Install requirements.
+
    `pip install requirements.txt`
 
 3. Create table in your PostgreSQL database.
