@@ -64,6 +64,7 @@ How to collect, store and analyze stock data with Python. This project will be b
       DB_NAME = 'name'
       APIKEY = 'apikey'
    ```
+   Also, `config.py` holds your Alpha Vantage API key, so make sure to edit that too.
 
 5. Run stock_analyis.py to start fetching data into your database.
 
