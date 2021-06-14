@@ -54,7 +54,16 @@ How to collect, store and analyze stock data with Python. This project will be b
       );
       ```
 
-4. Modify `config.py` according to your database connection details.
+4. Create a hypertable so we can use TimescaleDB features later on.
+   - with psql: 
+
+      `psql -f create_hypertable.sql`
+   - or with this SQL script:
+      ```sql
+      CREATE EXTENSION IF NOT EXISTS timescaledb;
+      SELECT create_hypertable('stocks2', 'stock_datetime');
+      ```
+5. Modify `config.py` according to your database connection details.
    ```python
    class StocksConfig(object):
       DB_USER = 'user'
@@ -66,13 +75,13 @@ How to collect, store and analyze stock data with Python. This project will be b
    ```
    Also, `config.py` holds your Alpha Vantage API key, so make sure to edit that too.
 
-5. Run stock_analyis.py to start fetching data into your database.
+6. Run stock_analyis.py to start fetching data into your database.
 
    ```bash
    python stock_analysis.py
    ```
 
-6. Check if data records are being inserted into the database.
+7. Check if data records are being inserted into the database.
 
 |stock_datetime|price_open|price_close|price_low|price_high|trading_volume|symbol|
 |--------------|----------|-----------|---------|----------|--------------|------|
