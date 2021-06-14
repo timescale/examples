@@ -1,22 +1,10 @@
 # Example Applications
 
-Collection of example applications to help you get familiar with TimescaleDB.
+TimescaleDB.
 
 | Example | Type | Description |
 |---|---|---|
-| [Hello Timescale](hello-timescale)| Geospatial | Analyze taxi cab data in New York City. |
-| [Raspberry Pi Light Sensor](pi-light)| Edge | Record light changes using a photoregister & Raspberry Pi. |
-| [MTA](mta) | Geospatial | Store & visualize bus activity in New York City. |
-| [Clients](clients) | Client Libraries | Sample code for connecting to TimescaleDB. |
-| [Air Quality](air-quality) | IoT | Sample code for collecting air quality measurements. |
 | [Crypto Tutorial](https://github.com/timescale/examples/tree/master/crypto_tutorial) | Financial | Sample code and dataset for analyzing cryptocurrency market data|
-
-
-
-### Integration Catalog
-
-Collection of technologies you can use with TimescaleDB.
-
 
 #### Ingest
 
