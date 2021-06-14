@@ -1,31 +1,17 @@
 # Clients
 
-Here is a list of client libraries and code examples to connect to a TimescaleDB instance.
+Client libraries and code examples to connect to a TimescaleDB instance.
 
 
 | Language | Client | Download |
 |---|---|---|
-| Go | pq | https://github.com/lib/pq |
-| [Java](#java) | JDBC Driver | https://jdbc.postgresql.org/ |
 | [Node.js](#nodejs) | pg package | https://www.npmjs.com/package/pg |
 | [Python](#python) | psycopg2 | https://pypi.org/project/psycopg2/ |
 
 
-### Java
-
-Include Maven dependency for PostgreSQL JDBC Driver
-
-    <dependency>
-      <groupId>org.postgresql</groupId>
-      <artifactId>postgresql</artifactId>
-      <version>42.2.0</version>
-    </dependency>
-
-Java [sample code here](tsdb-java-connection.java).
-
 ### Node.js
 
-Install node-postgres [pg](https://www.npmjs.com/package/pg) package:
+(2021) Install node-postgres [pg](https://www.npmjs.com/package/pg) package:
 
     npm install pg
 
