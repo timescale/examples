@@ -1,1 +1,0 @@
-select * from route_geofences;

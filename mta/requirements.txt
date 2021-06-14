@@ -1,4 +1,0 @@
-gtfs-realtime-bindings
-requests
-requests-cache
-psycopg2
