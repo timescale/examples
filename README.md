@@ -58,6 +58,11 @@ $ psql **command**
 \x	Show expanded query results
 \q	Quit psql
 
+# Create table in your PostgreSQL database.
+   - with psql:
+
+$ psql -f create_table.sql
+
 # Tutorial 
 https://www.youtube.com/watch?v=MFudksxlZjk
 https://docs.timescale.com/timescaledb/latest/how-to-guides/connecting/psql/#common-psql-commands
