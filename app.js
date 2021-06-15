@@ -1,4 +1,4 @@
-var pg = require('pg');
+import { Client } from 'pg';
 
 var config = {
     database: "defaultdb",
@@ -9,7 +9,7 @@ var config = {
     user: "YOUR-USER",
 };
 
-var client = new pg.Client(config);
+var client = new Client(config);
 
 client.connect(function (err) {
     if (err)
