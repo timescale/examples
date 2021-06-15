@@ -16,7 +16,7 @@ How to collect, store and analyze stock data with Python. This project will be b
 
    Data visualization to answer specific questions regarding the dataset.
 
-## Requirements
+## Prerequisites
 * Python 3
 * Virtualenv
 * PostgreSQL database with TimescaleDB extension
