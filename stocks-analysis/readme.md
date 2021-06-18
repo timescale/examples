@@ -83,9 +83,23 @@ How to collect, store and analyze stock data with Python. This project will be b
 
 7. Check if data records are being inserted into the database.
 
-|stock_datetime|price_open|price_close|price_low|price_high|trading_volume|symbol|
-|--------------|----------|-----------|---------|----------|--------------|------|
-|2021-06-10 20:00:00|126.2801|126.2801|126.2801|126.2801|1212|AAPL|
-|2021-06-10 19:59:00|126.28|126.28|126.28|126.28|420|AAPL|
-|2021-06-10 19:58:00|126.29|126.3|126.27|126.27|3021|AAPL|
+| stock_datetime      | price_open | price_close | price_low | price_high | trading_volume | symbol |
+| ------------------- | ---------- | ----------- | --------- | ---------- | -------------- | ------ |
+| 2021-06-10 20:00:00 | 126.2801   | 126.2801    | 126.2801  | 126.2801   | 1212           | AAPL   |
+| 2021-06-10 19:59:00 | 126.28     | 126.28      | 126.28    | 126.28     | 420            | AAPL   |
+| 2021-06-10 19:58:00 | 126.29     | 126.3       | 126.27    | 126.27     | 3021           | AAPL   |
 ...
+
+## Time-series stock price analysis
+
+1. Query1: How <insert symbol> stock price changed over time?
+2. Query2: How <insert symbol> trading volume changed over time?
+3. Query3: Which symbols had the most transaction volumes in the past <insert time frame>?
+4. Query4: Prices of FAANG over time?
+5. Query5: Which symbols had the most daily/weekly/monthly gains/losses?
+
+You can try these queries by:
+
+* running `explore.py` and uncommenting the lines in the main function.
+* opening `sql_script/explore.sql` which includes each query in one file.
+* using the jupyther notebook to modify the queries and explore other ideas.

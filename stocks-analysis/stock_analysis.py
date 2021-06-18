@@ -18,8 +18,14 @@ def get_symbols():
     symbols = [e.text for e in soup.select('div.company-code')]
     return symbols
 
-def fetch_stock_data(symbol):
-    """Fetches historical intraday data for one ticker symbol
+def get_slice(month):
+    if month <= 12:
+        return 'year1month' + str(month)
+    else:
+        return 'year2month1' + str(month)
+
+def fetch_stock_data(symbol, month):
+    """Fetches historical intraday data for one ticker symbol (1-min interval)
 
     Args:
         symbol (string): ticker symbol
@@ -28,7 +34,7 @@ def fetch_stock_data(symbol):
         dataframe
     """
     interval = '1min'
-    slice = 'year1month1'
+    slice = get_slice(month)
     apikey = config.APIKEY
     CSV_URL = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY_EXTENDED&' \
               'symbol={symbol}&interval={interval}&slice={slice}&apikey={apikey}' \
@@ -49,7 +55,7 @@ def fetch_stock_data(symbol):
 
 
 def insert_to_db(records):
-    """Inserts records into db
+    """Batch inserts records into db
 
     Args:
         records (list of tuples)
@@ -61,12 +67,13 @@ def insert_to_db(records):
     conn.commit()
 
 def main():
-    symbols = get_symbols()[:10] # for testing purposes, limiting this to 10
+    symbols = get_symbols()
     for symbol in symbols:
         print("Fetching data for: ", symbol)
-        stock_data = fetch_stock_data(symbol)
-        print('Inserting data...')
-        #insert_to_db(stock_data)
+        for month in range(1, 7): # last 6 months, you can go up to 24 month if you want to
+            stock_data = fetch_stock_data(symbol, month)
+            print('Inserting data...')
+            insert_to_db(stock_data)
 
 
 if __name__ == '__main__':
