@@ -89,3 +89,14 @@ How to collect, store and analyze stock data with Python. This project will be b
 |2021-06-10 19:59:00|126.28|126.28|126.28|126.28|420|AAPL|
 |2021-06-10 19:58:00|126.29|126.3|126.27|126.27|3021|AAPL|
 ...
+
+## Analyzing intraday stock data pt. 2
+
+1. Review current code
+2. Adjust the code to fetch more data (2 years at most)
+3. Explore the dataset
+   1. How <insert symbol> stock price changed over time? (line chart)
+   2. How <insert symbol> trading volume changed over time? (line chart)
+   3. Which symbols had the most transaction volumes in the past <insert time frame>? (bar chart)
+   4. Prices of FAANG over time? (line chart)
+   5. Which symbols had the most daily/weekly/monthly gains/losses?

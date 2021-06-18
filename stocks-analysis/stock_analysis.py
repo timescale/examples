@@ -19,7 +19,7 @@ def get_symbols():
     return symbols
 
 def fetch_stock_data(symbol):
-    """Fetches historical intraday data for one ticker symbol
+    """Fetches historical intraday data for one ticker symbol (1-min interval)
 
     Args:
         symbol (string): ticker symbol
@@ -49,7 +49,7 @@ def fetch_stock_data(symbol):
 
 
 def insert_to_db(records):
-    """Inserts records into db
+    """Batch inserts records into db
 
     Args:
         records (list of tuples)
@@ -66,7 +66,7 @@ def main():
         print("Fetching data for: ", symbol)
         stock_data = fetch_stock_data(symbol)
         print('Inserting data...')
-        #insert_to_db(stock_data)
+        insert_to_db(stock_data)
 
 
 if __name__ == '__main__':
