@@ -92,10 +92,10 @@ How to collect, store and analyze stock data with Python. This project will be b
 
 ## Time-series stock price analysis
 
-1. Query1: How <insert symbol> stock price changed over time? (line chart)
-2. Query2: How <insert symbol> trading volume changed over time? (line chart)
-3. Query3: Which symbols had the most transaction volumes in the past <insert time frame>? (bar chart)
-4. Query4: Prices of FAANG over time? (line chart)
+1. Query1: How <insert symbol> stock price changed over time?
+2. Query2: How <insert symbol> trading volume changed over time?
+3. Query3: Which symbols had the most transaction volumes in the past <insert time frame>?
+4. Query4: Prices of FAANG over time?
 5. Query5: Which symbols had the most daily/weekly/monthly gains/losses?
 
 You can try these queries by:
