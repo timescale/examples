@@ -90,7 +90,7 @@ How to collect, store and analyze stock data with Python. This project will be b
 |2021-06-10 19:58:00|126.29|126.3|126.27|126.27|3021|AAPL|
 ...
 
-## Analyzing intraday stock data pt. 2
+## Analyzing intraday stock data pt. 2 (agenda)
 
 1. Review current code
 2. Adjust the code to fetch more data (2 years at most)
