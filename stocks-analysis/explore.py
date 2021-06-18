@@ -90,7 +90,11 @@ def query5():
 
 
 def main():
-    query5()
+    query1()
+    #query2()
+    #query3()
+    #query4()
+    #query5()
     
 if __name__=='__main__':
     main()

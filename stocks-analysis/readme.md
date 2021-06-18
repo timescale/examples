@@ -83,20 +83,21 @@ How to collect, store and analyze stock data with Python. This project will be b
 
 7. Check if data records are being inserted into the database.
 
-|stock_datetime|price_open|price_close|price_low|price_high|trading_volume|symbol|
-|--------------|----------|-----------|---------|----------|--------------|------|
-|2021-06-10 20:00:00|126.2801|126.2801|126.2801|126.2801|1212|AAPL|
-|2021-06-10 19:59:00|126.28|126.28|126.28|126.28|420|AAPL|
-|2021-06-10 19:58:00|126.29|126.3|126.27|126.27|3021|AAPL|
+| stock_datetime      | price_open | price_close | price_low | price_high | trading_volume | symbol |
+| ------------------- | ---------- | ----------- | --------- | ---------- | -------------- | ------ |
+| 2021-06-10 20:00:00 | 126.2801   | 126.2801    | 126.2801  | 126.2801   | 1212           | AAPL   |
+| 2021-06-10 19:59:00 | 126.28     | 126.28      | 126.28    | 126.28     | 420            | AAPL   |
+| 2021-06-10 19:58:00 | 126.29     | 126.3       | 126.27    | 126.27     | 3021           | AAPL   |
 ...
 
-## Analyzing intraday stock data pt. 2 (agenda)
+## Time-series stock price analysis
 
-1. Review current code
-2. Adjust the code to fetch more data (2 years at most)
-3. Explore the dataset
-   1. How <insert symbol> stock price changed over time? (line chart)
-   2. How <insert symbol> trading volume changed over time? (line chart)
-   3. Which symbols had the most transaction volumes in the past <insert time frame>? (bar chart)
-   4. Prices of FAANG over time? (line chart)
-   5. Which symbols had the most daily/weekly/monthly gains/losses?
+1. Query1: How <insert symbol> stock price changed over time? (line chart)
+2. Query2: How <insert symbol> trading volume changed over time? (line chart)
+3. Query3: Which symbols had the most transaction volumes in the past <insert time frame>? (bar chart)
+4. Query4: Prices of FAANG over time? (line chart)
+5. Query5: Which symbols had the most daily/weekly/monthly gains/losses?
+
+Run `explore.py` to run these queries one by one (uncomment the lines in the main function).
+
+You can also use the jupyther notebook to modify the queries and explore other ideas.
