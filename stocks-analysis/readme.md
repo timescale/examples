@@ -98,6 +98,8 @@ How to collect, store and analyze stock data with Python. This project will be b
 4. Query4: Prices of FAANG over time? (line chart)
 5. Query5: Which symbols had the most daily/weekly/monthly gains/losses?
 
-Run `explore.py` to run these queries one by one (uncomment the lines in the main function).
+You can try these queries by:
 
-You can also use the jupyther notebook to modify the queries and explore other ideas.
+* running `explore.py` and uncommenting the lines in the main function.
+* opening `sql_script/explore.sql` which includes each query in one file.
+* using the jupyther notebook to modify the queries and explore other ideas.
