@@ -103,3 +103,11 @@ You can try these queries by:
 * running `explore.py` and uncommenting the lines in the main function.
 * opening `sql_script/explore.sql` which includes each query in one file.
 * using the jupyther notebook to modify the queries and explore other ideas.
+
+## Agenda (jun 25)
+
+1. Recap what we did until now (data ingestion, queries, etc)
+2. Correlation between popular symbols
+3. Distribution of price changes in a given time period
+4. Generate candlestick charts
+5. Set up continous aggregates

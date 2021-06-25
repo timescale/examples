@@ -9,3 +9,6 @@
 .vscode/settings.json
 stocks-analysis/__pycache__/config.cpython-38.pyc
 stocks-analysis/.vscode/settings.json
+.vscode/PythonImportHelper-v2-Completion.json
+stocks-analysis/.vscode/launch.json
+stocks-analysis/.vscode/PythonImportHelper-v2-Completion.json
