@@ -10,13 +10,12 @@ Collection of example applications to help you get familiar with TimescaleDB.
 | [Clients](clients) | Client Libraries | Sample code for connecting to TimescaleDB. |
 | [Air Quality](air-quality) | IoT | Sample code for collecting air quality measurements. |
 | [Crypto Tutorial](https://github.com/timescale/examples/tree/master/crypto_tutorial) | Financial | Sample code and dataset for analyzing cryptocurrency market data|
-
+| [Compression Preview](compression-preview) | Visualization | Preview compression data from hypertables with React and GraphQL. |
 
 
 ### Integration Catalog
 
 Collection of technologies you can use with TimescaleDB.
-
 
 #### Ingest
 
@@ -29,6 +28,7 @@ Collection of technologies you can use with TimescaleDB.
 - [Grafana](https://docs.timescale.com/latest/using-timescaledb/visualizing-data#grafana)
 - [Seeq](https://seeq12.atlassian.net/wiki/spaces/KB/pages/376963207/SQL+Connection+Configuration#SQLConnectionConfiguration-TimescaleDB)
 - [Tableau, PowerBI, Others](https://docs.timescale.com/latest/using-timescaledb/visualizing-data#other-viz-tools)
+- [Hasura, GraphQL, React](https://docs.timescale.com/latest/timescaledb/tutorials/visualize-compression-status)
 
 #### Monitoring
 
