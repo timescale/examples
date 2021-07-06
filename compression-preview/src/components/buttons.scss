@@ -1,0 +1,55 @@
+@import '~@timescale/web-styles/src/styles/utils';
+
+.btn {
+  padding: 12px;
+  max-width: 160px;
+  width: 100%;
+  @include body-copy(3);
+  font-weight: 700;
+  text-transform: uppercase;
+
+  &__add-data {
+    background: #ffffff;
+    border: 2px solid #fdb515;
+    box-sizing: border-box;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background: color($gold, 500);
+      cursor: pointer;
+    }
+  }
+
+  &__compress {
+    background-color: color($gold);
+    border: 2px solid #fdb515;
+    box-sizing: border-box;
+    border-radius: 4px;
+    text-transform: uppercase;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background: color($gold, 500);
+      cursor: pointer;
+    }
+
+    &--disabled {
+      pointer-events: none;
+      background-color: color($navy, 200);
+    }
+  }
+
+  &__decompress {
+    background-color: color($blue);
+    border: 2px solid color($blue);
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    color: white;
+
+    &:hover {
+      background: color($blue, 500);
+      cursor: pointer;
+    }
+  }
+}
