@@ -10,6 +10,7 @@ Collection of example applications to help you get familiar with TimescaleDB.
 | [Clients](clients) | Client Libraries | Sample code for connecting to TimescaleDB. |
 | [Air Quality](air-quality) | IoT | Sample code for collecting air quality measurements. |
 | [Crypto Tutorial](https://github.com/timescale/examples/tree/master/crypto_tutorial) | Financial | Sample code and dataset for analyzing cryptocurrency market data|
+| [Analyze intraday stocks data](analyze-intraday-stocks) | Financial | Store & analyze intraday candlestick data
 
 
 
