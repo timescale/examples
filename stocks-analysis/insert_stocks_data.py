@@ -1,6 +1,6 @@
 import csv
 import pandas as pd
-from config import StocksConfig as config
+import config
 import psycopg2
 from pgcopy import CopyManager
 
