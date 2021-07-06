@@ -12,11 +12,11 @@ TimescaleDB. To read the full tutorial, go to the TimescaleDB documentation!
 
 ## Installation and database setup
 
-### Clone repository and open intraday-stocks-analysis
+### Clone repository and open analyze-intraday-stocks folder
 
 ```bash
 git clone https://github.com/timescale/examples.git
-cd intraday-stocks-analysis/ 
+cd analyze-intraday-stocks/ 
 ```
 
 ### Create new virtual environment
