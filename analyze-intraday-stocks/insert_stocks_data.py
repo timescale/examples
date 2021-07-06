@@ -1,40 +1,39 @@
-from bs4 import BeautifulSoup
-import requests
+import csv
 import pandas as pd
-from config import StocksConfig as config
+import config
 import psycopg2
 from pgcopy import CopyManager
 
+conn = psycopg2.connect(database=config.DB_NAME, 
+                            host=config.DB_HOST, 
+                            user=config.DB_USER, 
+                            password=config.DB_PASS, 
+                            port=config.DB_PORT)
+columns = ('stock_datetime', 'price_open', 'price_close', 
+           'price_low', 'price_high', 'trading_volume', 'symbol')
+
 def get_symbols():
-    """Scrapes ticker symbols of top 100 US companies (based on market cap)
+    """Read symbols from a csv file.
 
     Returns:
-        list of strings: 100 ticker symbols
+        [list of strings]: symbols
     """
-    
-    url = 'https://companiesmarketcap.com/usa/largest-companies-in-the-usa-by-market-cap/'
-    html = requests.get(url).text
-    soup = BeautifulSoup(html, 'html.parser')
-    symbols = [e.text for e in soup.select('div.company-code')]
-    return symbols
-
-def get_slice(month):
-    if month <= 12:
-        return 'year1month' + str(month)
-    else:
-        return 'year2month1' + str(month)
+    with open('symbols.csv') as f:
+        reader = csv.reader(f)
+        return [row[0] for row in reader]
 
 def fetch_stock_data(symbol, month):
     """Fetches historical intraday data for one ticker symbol (1-min interval)
 
     Args:
         symbol (string): ticker symbol
+        month (int): month value as an integer 1-24 (for example month=4 will fetch data from the last 4 months)
 
     Returns:
-        dataframe
+        list of tuples: intraday (candlestick) stock data
     """
     interval = '1min'
-    slice = get_slice(month)
+    slice = 'year1month' + str(month) if month <= 12 else 'year2month1' + str(month)
     apikey = config.APIKEY
     CSV_URL = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY_EXTENDED&' \
               'symbol={symbol}&interval={interval}&slice={slice}&apikey={apikey}' \
@@ -43,37 +42,25 @@ def fetch_stock_data(symbol, month):
     df['symbol'] = symbol
 
     df['time'] = pd.to_datetime(df['time'], format='%Y-%m-%d %H:%M:%S')
-    df = df.rename(columns={'time': 'stock_datetime', 
+    df = df.rename(columns={'time': 'time', 
                             'open': 'price_open', 
                             'close': 'price_close', 
                             'high': 'price_high',
                             'low': 'price_low',
                             'volume': 'trading_volume'}
                             )
-
     return [row for row in df.itertuples(index=False, name=None)] 
-
-
-def insert_to_db(records):
-    """Batch inserts records into db
-
-    Args:
-        records (list of tuples)
-    """
-    conn = psycopg2.connect(database=config.DB_NAME, host=config.DB_HOST, user=config.DB_USER, password=config.DB_PASS, port=config.DB_PORT)
-    columns = ('stock_datetime', 'price_open', 'price_close', 'price_low', 'price_high', 'trading_volume', 'symbol')
-    mgr = CopyManager(conn, 'stocks2', columns)
-    mgr.copy(records)
-    conn.commit()
 
 def main():
     symbols = get_symbols()
     for symbol in symbols:
         print("Fetching data for: ", symbol)
-        for month in range(1, 7): # last 6 months, you can go up to 24 month if you want to
+        for month in range(1, 3): # last 2 months, you can go up to 24 month if you want to
             stock_data = fetch_stock_data(symbol, month)
             print('Inserting data...')
-            insert_to_db(stock_data)
+            mgr = CopyManager(conn, 'stocks_intraday', columns)
+            mgr.copy(stock_data)
+            conn.commit()
 
 
 if __name__ == '__main__':
