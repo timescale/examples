@@ -22,7 +22,7 @@ def query1():
     """.format(bucket="14 day")
     df = pd.read_sql(query, conn)
     fig = px.bar(df, x='symbol', y='volume', title="Most traded symbols in the last 14 days")
-    fig.show()
+    return fig
 
 # How did Apple's trading volume change over time?
 def query2():
@@ -35,7 +35,7 @@ def query2():
     """.format(bucket="1 day", symbol="AAPL")
     df = pd.read_sql(query, conn)
     fig = px.line(df, x='bucket', y='volume', title="Apple's daily trading volume over time")
-    fig.show()
+    return fig
 
 # How did Apple's stock price change over time? 
 def query3():
@@ -49,7 +49,7 @@ def query3():
     """.format(bucket="7 days", symbol="AAPL")
     df = pd.read_sql(query, conn)
     fig = px.line(df, x='bucket', y='last_closing_price')
-    fig.show()
+    return fig
 
 # Which symbols had the highest weekly gains?
 def query4():
@@ -69,7 +69,7 @@ def query4():
         LIMIT 5
     """.format(bucket="7 days", orderby="DESC")
     df = pd.read_sql(query, conn)
-    print(df)
+    return df
 
 # Weekly FAANG prices over time?
 def query5():
@@ -83,7 +83,7 @@ def query5():
     """.format(bucket="7 days", symbols="('AAPL', 'FB', 'AMZN', 'NFLX', 'GOOG')")
     df = pd.read_sql(query, conn)
     fig = px.line(df, x='bucket', y='last_closing_price', color='symbol', title="FAANG prices over time")
-    fig.show()
+    return fig
     
 # Weekly price changes of Apple, Facebook, Google?
 def query6():
@@ -130,7 +130,7 @@ def query7():
     figure.show()
     
 # Apple 15-min candlestick chart
-def query8():
+def query8(symbol="AAPL", date="2021-06-09"):
     import plotly.graph_objects as go
     query = """
         SELECT time_bucket('{bucket}', time) AS bucket, 
@@ -141,7 +141,7 @@ def query8():
         FROM stocks_intraday
         WHERE symbol = '{symbol}' AND date(time) = date('{date}') 
         GROUP BY bucket
-    """.format(bucket="15 min", symbol="AAPL", date="2021-06-09")
+    """.format(bucket="15 min", symbol=symbol, date=date)
     df = pd.read_sql(query, conn)
     figure = go.Figure(data=[go.Candlestick(x=df['bucket'],
                     open=df['price_open'],
@@ -149,18 +149,4 @@ def query8():
                     low=df['price_low'],
                     close=df['price_close'],)])
     figure.update_layout(title="15-min candlestick chart of Apple, 2021-06-09")
-    figure.show()   
-    
-
-def main():
-    query1()
-    #query2()
-    #query3()
-    #query4()
-    #query5()
-    #query6()
-    #query7()
-    #query8()
-    
-if __name__=='__main__':
-    main()
+    return figure 

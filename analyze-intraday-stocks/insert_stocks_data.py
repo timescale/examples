@@ -9,7 +9,7 @@ conn = psycopg2.connect(database=config.DB_NAME,
                             user=config.DB_USER, 
                             password=config.DB_PASS, 
                             port=config.DB_PORT)
-columns = ('stock_datetime', 'price_open', 'price_close', 
+columns = ('time', 'price_open', 'price_close', 
            'price_low', 'price_high', 'trading_volume', 'symbol')
 
 def get_symbols():
@@ -55,7 +55,7 @@ def main():
     symbols = get_symbols()
     for symbol in symbols:
         print("Fetching data for: ", symbol)
-        for month in range(1, 3): # last 2 months, you can go up to 24 month if you want to
+        for month in range(1, 2): 
             stock_data = fetch_stock_data(symbol, month)
             print('Inserting data...')
             mgr = CopyManager(conn, 'stocks_intraday', columns)
