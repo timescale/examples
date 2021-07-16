@@ -1,7 +1,7 @@
 # Analyze historical intraday stock data
 
 This project is an example on how to collect, store, and analyze intraday stock data with Python and 
-TimescaleDB. To read the full tutorial, go to the TimescaleDB documentation!
+TimescaleDB. [To read the full tutorial, go to the TimescaleDB documentation!](https://docs.timescale.com/timescaledb/latest/tutorials/analyze-intraday-stocks/)
 
 ## Prerequisites
 
