@@ -10,13 +10,28 @@
 # Extraneous statements have been added to help users of this script
 # vizualize the progress constructing the CSV
 ###################################################################
-import requests
+import urllib3
 import json
 import csv
 from datetime import datetime
+import argparse
 
-# Replace with your cryptocompare API Key or store as environment variable
-# Note: the script will not run if you do not use your own valid API key
+# accepting api key as a command line argument
+# run this script with an argument:
+# python crypto_data_extraction.py -a my_api_key
+# or
+# python crypto_data_extraction.py --apikey my_api_key
+parser = argparse.ArgumentParser(description='Api key',
+                                 formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+parser.add_argument('-a', '--apikey', help='valid api key')
+args = parser.parse_args()
+config = vars(args)
+apikey = 'apikey' if config['apikey'] is None else config["apikey"]
+
+# If you don't provide an `apikey` argument when running the script, 
+# replace and uncomment this string below with your cryptocompare API Key or
+# store it as an environment variable
+# Note: the script will not run properly if you do not use your own valid API key
 # apikey = 'YOUR_CRYPTO_COMPARE_API_KEY'
 
 #attach to end of URLstring
@@ -29,8 +44,9 @@ url_api_part = '&api_key=' + apikey
 URLcoinslist = 'https://min-api.cryptocompare.com/data/all/coinlist'
 
 #Get list of cryptos with their symbols
-res1 = requests.get(URLcoinslist)
-res1_json = res1.json()
+http = urllib3.PoolManager()
+res1 = http.request('GET', URLcoinslist)
+res1_json = json.loads(res1.data.decode('utf-8'))
 data1 = res1_json['Data'] 
 symbol_array = []
 cryptoDict = dict(data1)
@@ -58,8 +74,8 @@ num_cryptos = str(len(symbol_array))
 for symbol in symbol_array:
     # get data for that currency
     URL = 'https://min-api.cryptocompare.com/data/histoday?fsym='+ symbol +'&tsym=BTC&allData=true' + url_api_part
-    res = requests.get(URL)
-    res_json = res.json()
+    res = http.request('GET', URL)
+    res_json = json.loads(res.data.decode('utf-8'))
     data = res_json['Data']
     # write required fields into csv
     with open('crypto_prices.csv', mode = 'a') as test_file:
@@ -94,8 +110,8 @@ progress2 = 0
 for fiat in fiatList:
     # get data for bitcoin price in that fiat
     URL = 'https://min-api.cryptocompare.com/data/histoday?fsym=BTC&tsym='+fiat+'&allData=true' + url_api_part
-    res = requests.get(URL)
-    res_json = res.json()
+    res = http.request('GET', URL)
+    res_json = json.loads(res.data.decode('utf-8'))
     data = res_json['Data']
     # write required fields into csv
     with open('btc_prices.csv', mode = 'a') as test_file:
@@ -124,8 +140,8 @@ progress3 = 0
 for fiat in fiatList:
     # get data for bitcoin price in that fiat
     URL = 'https://min-api.cryptocompare.com/data/histoday?fsym=ETH&tsym='+fiat+'&allData=true' + url_api_part
-    res = requests.get(URL)
-    res_json = res.json()
+    res = http.request('GET', URL)
+    res_json = json.loads(res.data.decode('utf-8'))
     data = res_json['Data']
     # write required fields into csv
     with open('eth_prices.csv', mode = 'a') as test_file:
