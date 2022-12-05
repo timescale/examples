@@ -10,7 +10,7 @@
 # Extraneous statements have been added to help users of this script
 # vizualize the progress constructing the CSV
 ###################################################################
-import urllib3
+import urllib.request
 import json
 import csv
 from datetime import datetime
@@ -28,7 +28,7 @@ args = parser.parse_args()
 config = vars(args)
 apikey = 'apikey' if config['apikey'] is None else config["apikey"]
 
-# If you don't provide an `apikey` argument when running the script, 
+# If you don't provide an `apikey` argument when running the script,
 # replace and uncomment this string below with your cryptocompare API Key or
 # store it as an environment variable
 # Note: the script will not run properly if you do not use your own valid API key
@@ -44,10 +44,10 @@ url_api_part = '&api_key=' + apikey
 URLcoinslist = 'https://min-api.cryptocompare.com/data/all/coinlist'
 
 #Get list of cryptos with their symbols
-http = urllib3.PoolManager()
-res1 = http.request('GET', URLcoinslist)
-res1_json = json.loads(res1.data.decode('utf-8'))
-data1 = res1_json['Data'] 
+with urllib.request.urlopen(URLcoinslist) as response:
+    res1 = response.read()
+res1_json = json.loads(res1.decode('utf-8'))
+data1 = res1_json['Data']
 symbol_array = []
 cryptoDict = dict(data1)
 
@@ -74,8 +74,9 @@ num_cryptos = str(len(symbol_array))
 for symbol in symbol_array:
     # get data for that currency
     URL = 'https://min-api.cryptocompare.com/data/histoday?fsym='+ symbol +'&tsym=BTC&allData=true' + url_api_part
-    res = http.request('GET', URL)
-    res_json = json.loads(res.data.decode('utf-8'))
+    with urllib.request.urlopen(URL) as response:
+        res = response.read()
+    res_json = json.loads(res.decode('utf-8'))
     data = res_json['Data']
     # write required fields into csv
     with open('crypto_prices.csv', mode = 'a') as test_file:
@@ -92,17 +93,17 @@ for symbol in symbol_array:
             entry = [ts, o, h, l, c, vfrom, vto, symbol]
             test_file_writer.writerow(entry)
     progress = progress + 1
-    print('Processed ' + str(symbol)) 
+    print('Processed ' + str(symbol))
     print(str(progress) + ' currencies out of ' +  num_cryptos + ' written to csv')
 print('Done getting price data for all coins. See crypto_prices.csv for result')
 
 #####################################################################
-#3. Populate BTC prices in different fiat currencies 
+#3. Populate BTC prices in different fiat currencies
 #####################################################################
 # List of fiat currencies we want to query
 # You can expand this list, but CryptoCompare does not have
 # a comprehensive fiat lsit on their site
-fiatList = ['AUD', 'CAD', 'CNY', 'EUR', 'GBP', 'GOLD', 'HKD', 
+fiatList = ['AUD', 'CAD', 'CNY', 'EUR', 'GBP', 'GOLD', 'HKD',
 'ILS', 'INR', 'JPY', 'KRW', 'PLN', 'RUB', 'SGD', 'UAH', 'USD', 'ZAR']
 
 #counter variable for progress made
@@ -110,8 +111,9 @@ progress2 = 0
 for fiat in fiatList:
     # get data for bitcoin price in that fiat
     URL = 'https://min-api.cryptocompare.com/data/histoday?fsym=BTC&tsym='+fiat+'&allData=true' + url_api_part
-    res = http.request('GET', URL)
-    res_json = json.loads(res.data.decode('utf-8'))
+    with urllib.request.urlopen(URL) as response:
+        res = response.read()
+    res_json = json.loads(res.decode('utf-8'))
     data = res_json['Data']
     # write required fields into csv
     with open('btc_prices.csv', mode = 'a') as test_file:
@@ -128,20 +130,21 @@ for fiat in fiatList:
             entry = [ts, o, h, l, c, vfrom, vto, fiat]
             test_file_writer.writerow(entry)
     progress2 = progress2 + 1
-    print('processed ' + str(fiat)) 
+    print('processed ' + str(fiat))
     print(str(progress2) + ' currencies out of  17 written')
 print('Done getting price data for btc. See btc_prices.csv for result')
 
 #####################################################################
-#4. Populate ETH prices in different fiat currencies 
+#4. Populate ETH prices in different fiat currencies
 #####################################################################
 #counter variable for progress made
 progress3 = 0
 for fiat in fiatList:
     # get data for bitcoin price in that fiat
     URL = 'https://min-api.cryptocompare.com/data/histoday?fsym=ETH&tsym='+fiat+'&allData=true' + url_api_part
-    res = http.request('GET', URL)
-    res_json = json.loads(res.data.decode('utf-8'))
+    with urllib.request.urlopen(URL) as response:
+        res = response.read()
+    res_json = json.loads(res.decode('utf-8'))
     data = res_json['Data']
     # write required fields into csv
     with open('eth_prices.csv', mode = 'a') as test_file:
@@ -158,6 +161,6 @@ for fiat in fiatList:
             entry = [ts, o, h, l, c, vfrom, vto, fiat]
             test_file_writer.writerow(entry)
     progress3 = progress3 + 1
-    print('processed ' + str(fiat)) 
+    print('processed ' + str(fiat))
     print(str(progress3) + ' currencies out of  17 written')
 print('Done getting price data for eth. See eth_prices.csv for result')
