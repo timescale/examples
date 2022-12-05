@@ -23,7 +23,7 @@ import argparse
 # python crypto_data_extraction.py --apikey my_api_key
 parser = argparse.ArgumentParser(description='Api key',
                                  formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument('-a', '--apikey', help='valid api key')
+parser.add_argument('-a', '--apikey', help='valid api key', required=True)
 args = parser.parse_args()
 config = vars(args)
 apikey = 'apikey' if config['apikey'] is None else config["apikey"]
