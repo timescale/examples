@@ -3,7 +3,7 @@ bs4==0.0.1
 certifi==2021.5.30
 chardet==4.0.0
 idna==2.10
-numpy==1.21.0
+numpy==1.22.0
 pandas==1.3.0
 pgcopy==1.5.0
 plotly==5.1.0
