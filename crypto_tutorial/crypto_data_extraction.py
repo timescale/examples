@@ -52,7 +52,7 @@ symbol_array = []
 cryptoDict = dict(data1)
 
 #write to CSV
-with open('coin_names.csv', mode = 'w') as test_file:
+with open('coin_names.csv', mode = 'w', newline='') as test_file:
     test_file_writer = csv.writer(test_file, delimiter = ',', quotechar = '"', quoting=csv.QUOTE_MINIMAL)
     for coin in cryptoDict.values():
         name = coin['Name']
@@ -79,7 +79,7 @@ for symbol in symbol_array:
     res_json = json.loads(res.decode('utf-8'))
     data = res_json['Data']
     # write required fields into csv
-    with open('crypto_prices.csv', mode = 'a') as test_file:
+    with open('crypto_prices.csv', mode = 'a', newline='') as test_file:
         test_file_writer = csv.writer(test_file, delimiter = ',', quotechar = '"', quoting=csv.QUOTE_MINIMAL)
         for day in data:
             rawts = day['time']
@@ -116,7 +116,7 @@ for fiat in fiatList:
     res_json = json.loads(res.decode('utf-8'))
     data = res_json['Data']
     # write required fields into csv
-    with open('btc_prices.csv', mode = 'a') as test_file:
+    with open('btc_prices.csv', mode = 'a', newline='') as test_file:
         test_file_writer = csv.writer(test_file, delimiter = ',', quotechar = '"', quoting=csv.QUOTE_MINIMAL)
         for day in data:
             rawts = day['time']
@@ -147,7 +147,7 @@ for fiat in fiatList:
     res_json = json.loads(res.decode('utf-8'))
     data = res_json['Data']
     # write required fields into csv
-    with open('eth_prices.csv', mode = 'a') as test_file:
+    with open('eth_prices.csv', mode = 'a', newline='') as test_file:
         test_file_writer = csv.writer(test_file, delimiter = ',', quotechar = '"', quoting=csv.QUOTE_MINIMAL)
         for day in data:
             rawts = day['time']
